@@ -1457,6 +1457,19 @@ class Monitor extends BeanModel {
      */
     static async sendNotification(isFirstBeat, monitor, bean) {
         if (!isFirstBeat || bean.status === DOWN) {
+            const { isSnoozed, clearSnooze } = require("../monitor-snooze");
+
+            // Recovery always clears snooze so the Up notification can go out
+            if (bean.status === UP && monitor.id) {
+                await clearSnooze(monitor.id);
+            } else if (monitor.id && (await isSnoozed(monitor.id))) {
+                log.info(
+                    "monitor",
+                    `[${monitor.name}] Skipping notification — monitor is snoozed`
+                );
+                return;
+            }
+
             const notificationList = await Monitor.getNotificationList(monitor);
 
             let text;

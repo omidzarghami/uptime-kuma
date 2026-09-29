@@ -499,6 +499,8 @@
     "telegramMessageThreadIDDescription": "Optional Unique identifier for the target message thread (topic) of the forum; for forum supergroups only",
     "telegramSendSilently": "Send Silently",
     "telegramSendSilentlyDescription": "Sends the message silently. Users will receive a notification with no sound.",
+    "telegramEnableSnooze": "Snooze buttons on alerts",
+    "telegramEnableSnoozeDescription": "Adds Snooze 30m / Snooze 1h buttons under alert messages. While snoozed, all notifications for that monitor are suppressed until the timer ends (or the monitor recovers).",
     "telegramProtectContent": "Protect Forwarding/Saving",
     "telegramProtectContentDescription": "If enabled, the bot messages in Telegram will be protected from forwarding and saving.",
     "telegramUseTemplate": "Use custom message template",

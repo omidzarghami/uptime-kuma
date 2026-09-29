@@ -144,6 +144,11 @@ const Database = require("./database");
 
 log.debug("server", "Importing Background Jobs");
 const { initBackgroundJobs, stopBackgroundJobs } = require("./jobs");
+const {
+    startTelegramSnoozeService,
+    stopTelegramSnoozeService,
+    refreshBots: refreshTelegramSnoozeBots,
+} = require("./telegram-snooze-service");
 const { loginRateLimiter, twoFaRateLimiter } = require("./rate-limiter");
 
 const { apiAuth } = require("./auth");
@@ -1571,6 +1576,7 @@ let needSetup = false;
 
                 let notificationBean = await Notification.save(notification, notificationID, socket.userID);
                 await sendNotificationList(socket);
+                refreshTelegramSnoozeBots().catch(() => {});
 
                 callback({
                     ok: true,
@@ -1592,6 +1598,7 @@ let needSetup = false;
 
                 await Notification.delete(notificationID, socket.userID);
                 await sendNotificationList(socket);
+                refreshTelegramSnoozeBots().catch(() => {});
 
                 callback({
                     ok: true,
@@ -1781,6 +1788,7 @@ let needSetup = false;
 
         // Put this here. Start background jobs after the db and server is ready to prevent clear up during db migration.
         await initBackgroundJobs();
+        await startTelegramSnoozeService();
 
         checkVersion.startInterval();
     });
@@ -1997,6 +2005,7 @@ async function shutdownFunction(signal) {
     }
 
     stopBackgroundJobs();
+    stopTelegramSnoozeService();
     await cloudflaredStop();
     Settings.stopCacheCleaner();
 }

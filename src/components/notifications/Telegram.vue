@@ -110,6 +110,17 @@
 
     <div class="mb-3">
         <div class="form-check form-switch">
+            <input v-model="$parent.notification.telegramEnableSnooze" class="form-check-input" type="checkbox" />
+            <label class="form-check-label">{{ $t("telegramEnableSnooze") }}</label>
+        </div>
+
+        <div class="form-text">
+            {{ $t("telegramEnableSnoozeDescription") }}
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <div class="form-check form-switch">
             <input v-model="$parent.notification.telegramSendSilently" class="form-check-input" type="checkbox" />
             <label class="form-check-label">{{ $t("telegramSendSilently") }}</label>
         </div>

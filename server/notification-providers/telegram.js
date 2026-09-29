@@ -99,6 +99,24 @@ class Telegram extends NotificationProvider {
                 }
             }
 
+            // Snooze inline buttons (real monitor alerts only — not Test Notification)
+            if (notification.telegramEnableSnooze && monitorJSON && monitorJSON.id) {
+                params.reply_markup = {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: "😴 Snooze 30m",
+                                callback_data: `uks:${monitorJSON.id}:30`,
+                            },
+                            {
+                                text: "😴 Snooze 1h",
+                                callback_data: `uks:${monitorJSON.id}:60`,
+                            },
+                        ],
+                    ],
+                };
+            }
+
             let config = this.getAxiosConfigWithProxy();
 
             await axios.post(`${url}/bot${notification.telegramBotToken}/sendMessage`, params, config);
